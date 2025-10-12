@@ -118,7 +118,6 @@ def read_fastq_file(input_fastq):
         lines = file.readlines()
 
     for i in range(0, len(lines), 4):
-        
         name_line = lines[i].strip()
         seq_name = name_line[1:]
         seq = lines[i+1].strip()
