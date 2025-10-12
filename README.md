@@ -1,8 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
 
 # BioUtils
 
@@ -11,9 +6,11 @@ FASTQ файлами.
 
 ## Установка
 
-\`\`\`bash git clone
+```bash
+git clone
 <https://github.com/pmlikhacheva/bioinf_utilits/bioutils.git> cd
 bioutils
+```
 
 ## Описание
 
@@ -33,8 +30,8 @@ run_dna_rna_tools(\*args)
 str или list: Результат обработки последовательностей
 
 #### Отдельные DNA/RNA функции
-
-python from modules.dna_tools import correct_nucleic_acid, transcribe,
+```python
+from modules.dna_tools import correct_nucleic_acid, transcribe,
 reverse_sequence, complement_sequence
 
 # Проверка валидности последовательности
@@ -52,6 +49,7 @@ reversed_seq = reverse_sequence("ATCG") \# "GCTA"
 # Комплементарная последовательность
 
 comp_seq = complement_sequence("ATCG") \# "TAGC"
+```
 
 #### FASTQ обработка
 
@@ -71,10 +69,11 @@ input_fastq: Путь к входному FASTQ файлу output_fastq: Пут�
 
 dict: Отфильтрованный словарь FASTQ последовательностей Примеры
 использования:
-
-python from bioutils import filter_fastq
+```python
+from bioutils import filter_fastq
 
 # Базовая фильтрация
+
 
 result = filter_fastq("input.fastq", "filtered/output.fastq")
 
@@ -105,6 +104,7 @@ gc_content = calculate_gc_content("ATGC") \# 50.0
 
 quality_score = calculate_quality_score("IIII") \# 10.0 Обработка
 биоинформатических файлов
+```
 
 convert_multiline_fasta_to_oneline(input_fasta, output_fasta=None)
 
@@ -117,7 +117,8 @@ input_fasta: Путь к входному FASTA файлу output_fasta: Пут�
 
 str: Путь к созданному файлу Пример использования:
 
-python from bio_files_processor import
+```python
+from bio_files_processor import
 convert_multiline_fasta_to_oneline
 
 # С автоматическим именем файла
@@ -127,7 +128,10 @@ output = convert_multiline_fasta_to_oneline("input.fasta")
 # С указанием выходного файла
 
 output = convert_multiline_fasta_to_oneline("input.fasta",
-"output_oneline.fasta") parse_blast_output(input_file, output_file)
+"output_oneline.fasta")
+```
+ parse_blast_output(input_file, output_file)
+
 
 Парсит BLAST вывод и извлекает лучшие совпадения.
 
@@ -138,6 +142,9 @@ input_file: Путь к файлу с результатами BLAST output_file
 
 int: Количество найденных белков Пример использования:
 
-python from bio_files_processor import parse_blast_output
+```python
+from bio_files_processor import parse_blast_output
 
-
+count = parse_blast_output("blast_results.txt", "best_hits.txt")
+print(f"Найдено {count} уникальных белков")
+```
