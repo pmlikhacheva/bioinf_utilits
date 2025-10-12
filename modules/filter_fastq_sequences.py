@@ -1,6 +1,7 @@
 """
 Модуль для работы с FASTQ последовательностями
 """
+import os
 
 
 def calculate_gc_content(sequence: str) -> float:
@@ -125,4 +126,28 @@ def read_fastq_file(input_fastq):
         seqs[seq_name] = (seq, quality)
     
     return seqs
+
+def write_fastq_from_dict(seqs, output_fastq):
+    
+    """
+    Записывает последовательности из словаря в FASTQ файл.
+.
+
+    Args:
+        sequences: Словарь последовательностей.
+        output_fastq: Путь для сохранения файла
+
+    """
+    
+    output_dir = os.path.dirname(output_fastq)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+      
+    with open(output_fastq, 'w') as file:
+        for seq_name, (seq, quality) in seqs.items():
+            file.write(f"@{seq_name}\n")
+            file.write(f"{seq}\n")
+            file.write("+\n")
+            file.write(f"{quality}\n")
+
         
