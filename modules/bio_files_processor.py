@@ -53,3 +53,55 @@ def convert_multiline_fasta_to_oneline(input_fasta, output_fasta=None):
     print(f"Конвертировано {len(seqs)} последовательностей в {output_fasta}")
     return output_fasta
 
+
+def parse_blast_output(input_file, output_file):
+    """
+    Парсит BLAST вывод и извлекает лучшие совпадения
+    
+    Args:
+        input_file: Путь к файлу с результатами BLAST
+        output_file: Путь для сохранения списка белков
+    
+    Returns:
+        Количество найденных белков
+    """
+    
+    proteins = set()
+    
+    with open(input_file, 'r') as file:
+        content = file.read()
+    
+    # Разделяем на секции по каждому запросу
+    query_sections = re.split(r'Query= ', content)
+    
+    for section in query_sections[1:]:  # Пропускаем первую пустую секцию
+        # Ищем секцию с значимыми совпадениями
+        if 'Sequences producing significant alignments:' in section:
+            # Извлекаем часть после заголовка
+            alignments_part = section.split('Sequences producing significant alignments:')[1]
+            # Берем первую строку с описанием белка
+            lines = alignments_part.split('\n')
+            for line in lines[1:]:  # Пропускаем строку с заголовками
+                line = line.strip()
+                if line and not line.startswith('>') and line:
+                    # Извлекаем описание белка (все после e-value)
+                    parts = line.split()
+                    if len(parts) >= 3:
+                        # Объединяем все части кроме первых двух (score и e-value)
+                        protein_name = ' '.join(parts[2:])
+                        if protein_name and protein_name != 'Description':
+                            proteins.add(protein_name)
+                            break  # Берем только первый белок для каждого запроса
+    
+    # Сортируем белки по алфавиту
+    sorted_proteins = sorted(proteins)
+    
+    # Записываем в файл
+    with open(output_file, 'w') as file:
+        for protein in sorted_proteins:
+            file.write(f"{protein}\n")
+    
+    print(f"Найдено {len(sorted_proteins)} уникальных белков в {output_file}")
+    return len(sorted_proteins)
+
+
