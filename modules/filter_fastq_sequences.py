@@ -98,3 +98,31 @@ def filter_fastq_sequences(
         filtered_seqs[seq_name] = (sequence, quality)
     
     return filtered_seqs
+
+def read_fastq_file(input_fastq):
+    """
+    Читает FASTAQ файл и возвращает словарь с последовательностями.
+
+    Args:
+        input_fastq: путь к входному FASTAQ
+
+    Returns:
+        
+        Словарь: {name_of_seq: (seq, quality)}
+    """
+
+    seqs = {}
+    
+    with open(input_fastq, 'r') as file:
+        lines = file.readlines()
+
+    for i in range(0, len(lines), 4):
+        
+        name_line = lines[i].strip()
+        seq_name = name_line[1:]
+        seq = lines[i+1].strip()
+        quality = lines[i+3].strip() 
+        seqs[seq_name] = (seq, quality)
+    
+    return seqs
+        
